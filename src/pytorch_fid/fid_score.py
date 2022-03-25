@@ -236,9 +236,17 @@ def compute_statistics_of_path(path, model, batch_size, dims, device,
         with np.load(path) as f:
             m, s = f['mu'][:], f['sigma'][:]
     else:
-        path = pathlib.Path(path)
-        files = sorted([file for ext in IMAGE_EXTENSIONS
-                       for file in path.glob('*.{}'.format(ext))])
+        # path = pathlib.Path(path)
+        # files = sorted([file for ext in IMAGE_EXTENSIONS
+        #                for file in path.glob('*.{}'.format(ext))])
+        files = []
+        subfolders = os.listdir(path)
+        for subfolder in subfolders:
+            path_to_subfolder = os.path.join(path, subfolder)
+            subfiles = os.listdir(path_to_subfolder)
+            subfiles = [os.path.join(path_to_subfolder, s) for s in subfiles]
+            files.extend(subfiles)
+
         print("files[10:] = ", files[10:])
         print("batch size = ", batch_size)
         m, s = calculate_activation_statistics(files, model, batch_size,
