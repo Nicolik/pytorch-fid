@@ -230,6 +230,8 @@ def calculate_activation_statistics(files, model, batch_size=50, dims=2048,
 
 def compute_statistics_of_path(path, model, batch_size, dims, device,
                                num_workers=1):
+
+    print("[compute_statistics_of_path] begin")
     if path.endswith('.npz'):
         with np.load(path) as f:
             m, s = f['mu'][:], f['sigma'][:]
@@ -247,6 +249,8 @@ def compute_statistics_of_path(path, model, batch_size, dims, device,
 
 def calculate_fid_given_paths(paths, batch_size, device, dims, num_workers=1):
     """Calculates the FID of two paths"""
+    print("[calculate_fid_given_paths] begin")
+
     for p in paths:
         if not os.path.exists(p):
             raise RuntimeError('Invalid path: %s' % p)
